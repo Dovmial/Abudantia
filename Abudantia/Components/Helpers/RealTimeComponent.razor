@@ -1,0 +1,28 @@
+﻿@rendermode InteractiveServer
+@using System.Timers
+@implements IDisposable
+
+<time class="h3" datetime=@currentDateTime>@currentDateTime</time>
+
+@code {
+    Timer timer = new(1000);
+    DateTime currentDateTime = DateTime.Now;
+
+    protected override void OnInitialized()
+    {
+        timer.Elapsed += (s, e) => OnTimerCallback();
+        timer.Start();
+    }
+
+    private void OnTimerCallback()
+    {
+
+        _ = InvokeAsync(() =>
+        {
+            currentDateTime = DateTime.Now;
+            StateHasChanged();
+        });
+    }
+
+    public void Dispose() => timer.Dispose();
+}
