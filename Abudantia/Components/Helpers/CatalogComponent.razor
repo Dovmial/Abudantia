@@ -1,0 +1,32 @@
+﻿@using Abudantia.Models
+<h3>Catalog</h3>
+
+<table class="table table-dark">
+    <thead class="thead-dark">
+        <tr>
+            <th>Название</th>
+            <th>Описание</th>
+            <th>Цена</th>
+            <th>Изображение</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Product product in Catalog)
+        {
+            <tr>
+                <td>@product.Name</td>
+                <td>@product.Description</td>
+                <td>@product.Price</td>
+                <td><img class="" src="@product.ImageLink"/></td>
+               @*  <td><btton class="btn btn-danger" @onclick="() => DeleteTask(task.Id)">Удалить</btton></td> *@
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    [Parameter]
+    public Catalog Catalog{ get; set; }
+  
+}

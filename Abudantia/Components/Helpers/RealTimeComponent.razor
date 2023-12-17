@@ -16,10 +16,9 @@
 
     private void OnTimerCallback()
     {
-
         _ = InvokeAsync(() =>
         {
-            currentDateTime = DateTime.Now;
+            currentDateTime = DateTime.Now; //currentDateTime.AddSeconds(-1);
             StateHasChanged();
         });
     }

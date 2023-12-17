@@ -1,6 +1,10 @@
 ﻿@page "/products"
+@using Abudantia.Components.Helpers
+@using Abudantia.Models
 <h3>Products</h3>
 
-@code {
+<CatalogComponent Catalog="@Catalog"/>
 
+@code {
+    Catalog Catalog { get; set; } = new();
 }
