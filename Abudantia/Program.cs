@@ -1,17 +1,21 @@
 using Abudantia.Components;
 using Abudantia.Data;
 using Abudantia.Models;
+using Abudantia.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
-
+//"Abudantia"
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
-builder.Services.AddDbContext<EfContext>(
-    options => options.UseInMemoryDatabase(databaseName: "Abudantia"));
+
+string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+builder.Services.AddDbContext<EfContext>(options => options.UseSqlite(connectionString));
 
 builder.Services.AddSingleton<Catalog>();
+builder.Services.AddScoped<ProductService>();
 
 var app = builder.Build();
 

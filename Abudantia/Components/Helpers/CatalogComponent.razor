@@ -1,4 +1,7 @@
 ﻿@using Abudantia.Models
+@using Abudantia.Services
+@inject ProductService ProductService;
+
 <h3>Catalog</h3>
 
 <table class="table table-dark">
@@ -26,6 +29,8 @@
 </table>
 
 @code {
+
+    //TODO: Выводить из базы
     [Parameter]
     public Catalog Catalog{ get; set; }
   
