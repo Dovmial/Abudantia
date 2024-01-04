@@ -1,4 +1,4 @@
-﻿namespace Abudantia.Eums
+﻿namespace Abudantia.Enums
 {
     public enum Enum_CategoryType
     {

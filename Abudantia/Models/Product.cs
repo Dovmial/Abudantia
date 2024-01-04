@@ -1,4 +1,4 @@
-﻿using Abudantia.Eums;
+﻿using Abudantia.Enums;
 
 namespace Abudantia.Models
 {
