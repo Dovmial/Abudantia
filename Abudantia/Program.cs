@@ -3,6 +3,7 @@ using Abudantia.Data;
 using Abudantia.Models;
 using Abudantia.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 //"Abudantia"
@@ -11,10 +12,10 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-
 builder.Services.AddDbContext<EfContext>(options => options.UseSqlite(connectionString));
 
 builder.Services.AddSingleton<Catalog>();
+builder.Services.AddSingleton<Cart>();//TODO: у каждого пользовател€ сво€ корзина должна быть
 builder.Services.AddScoped<ProductService>();
 
 var app = builder.Build();

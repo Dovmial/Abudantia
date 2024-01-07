@@ -9,6 +9,7 @@ namespace Abudantia.Models
         {
             Fixture fixture = new();
             IEnumerable<Product> res = fixture.CreateMany<Product>(15);
+            Clear();
             AddRange(res);
 
             this[0].ImageLink = "https://avatars.mds.yandex.net/get-mpic/4977072/img_id4659133673044625928.jpeg/orig";

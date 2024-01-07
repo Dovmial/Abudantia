@@ -9,11 +9,19 @@
     </div>
     <div class="d-flex justify-content-around mb-5">
         <h3 >@product.Price руб. </h3>
-        <a href="#" class="btn btn-primary">В корзину</a>
+        <button class="btn btn-primary" @onclick="AddToCart">В корзину</button>
     </div>
 
 </div>
 @code {
     [Parameter]
     public Product product { get; set; } = null!;
+
+    [Parameter]
+    public Cart Cart { get; set; } = null!;
+
+    void AddToCart()
+    {
+        Cart.Add(product);
+    }
 }

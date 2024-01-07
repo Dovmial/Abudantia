@@ -1,46 +1,47 @@
 ﻿@using Abudantia.Models
-@using Abudantia.Services
+@using Abudantia.Services;
+
+@rendermode InteractiveServer
 @inject ProductService ProductService;
+@inject Cart Cart;
+
+@* @inject ILogger<Navigate> Logger *@
+
+@inject NavigationManager Navigation;
+@implements IDisposable;
+
+<button type="button" class="btn btn-primary" id="liveToastBtn" @onclick="Showtoast">Show live toast</button>
+<button type="button" class="btn btn-primary" @onclick="GoToCart">Корзина</button>
 
 <div class="container py-5">
     <h3 class="text-center">Catalog</h3>
     @for (int r = 0; r < 5; r++)
     {
         <div class="row row-cols-1 row-cols-md-3 g-4 py-5">
-            @for (int i = 0; i < 3; ++i)
+            @for (int i = 0; i < 3 && productIndex < Catalog.Count; ++i)
             {
                 <div class="col-12 col-md-6 col-lg-4">
-                    <CardComponent product="@Catalog[productIndex++]"/>
+                    <CardComponent product="@Catalog[productIndex++]" Cart="@Cart"/>
                 </div>
             }
         </div>
     }
 </div>
-@* 
-<table class="table table-dark">
-    <thead class="thead-dark">
-        <tr>
-            <th>Название</th>
-            <th>Описание</th>
-            <th>Цена</th>
-            <th>Изображение</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (Product product in Catalog)
-        {
-            <tr>
-                <td>@product.Name</td>
-                <td>@product.Description</td>
-                <td>@product.Price</td>
-                <td><img class="" src="@product.ImageLink" /></td>
-                @*  <td><btton class="btn btn-danger" @onclick="() => DeleteTask(task.Id)">Удалить</btton></td> 
-            </tr>
-        }
-    </tbody>
-</table>
- *@
+
+@if (toast)
+{
+    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <img src="..." class="rounded me-2" alt="...">
+            <strong class="me-auto">Bootstrap</strong>
+            <small>11 mins ago</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            Hello, world! This is a toast message.
+        </div>
+    </div>
+}
 @code {
 
     //TODO: Выводить из базы
@@ -48,5 +49,29 @@
     public Catalog Catalog { get; set; }
 
     int productIndex = 0;
+    protected override void OnAfterRender(bool firstRender)
+    {
+        productIndex = 0;
+    }
 
+    bool toast = false;
+    void Showtoast() =>  toast = !toast;
+
+    void GoToCart() => Navigation.NavigateTo("cart");
+
+
+    protected override void OnInitialized()
+    {
+        Navigation.LocationChanged += HandleLocationChanged;
+    }
+
+    private void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
+    {
+        //Logger.LogInformation("URL of new location: {Location}", e.Location);
+    }
+
+    public void Dispose()
+    {
+        Navigation.LocationChanged -= HandleLocationChanged;
+    }
 }

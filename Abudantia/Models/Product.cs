@@ -10,5 +10,6 @@ namespace Abudantia.Models
         public decimal Price { get; set; }
         public string? ImageLink { get; set; }
         public Enum_CategoryType Category{ get; set; }
+        public override string ToString() => $"{Name}: {Price}";
     }
 }
