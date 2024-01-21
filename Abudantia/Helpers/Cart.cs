@@ -1,5 +1,6 @@
-﻿
-namespace Abudantia.Models
+﻿using Abudantia.Models;
+
+namespace Abudantia.Helpers
 {
     public class Cart
     {
@@ -7,22 +8,22 @@ namespace Abudantia.Models
         public decimal TotalPrice { get; private set; } = 0m;
         public void Add(Product product, int amount = 1)
         {
-            if(product is null) throw new ArgumentNullException(nameof(product));
+            if (product is null) throw new ArgumentNullException(nameof(product));
 
             if (_choosedGoods.ContainsKey(product))
                 _choosedGoods[product] += amount;
-            else 
+            else
                 _choosedGoods.Add(product, amount);
             TotalPrice += product.Price * amount;
         }
 
-        public void Remove(Product product) 
+        public void Remove(Product product)
         {
             if (_choosedGoods.ContainsKey(product))
             {
                 TotalPrice -= product.Price * _choosedGoods[product];
                 _choosedGoods.Remove(product);
-               
+
             }
         }
 

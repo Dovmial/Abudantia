@@ -1,8 +1,9 @@
-﻿@using Abudantia.Models
-@using Abudantia.Services;
+﻿@using Abudantia.Helpers
+@using Abudantia.Models
+@using Abudantia.Repository;
 
 @rendermode InteractiveServer
-@inject ProductService ProductService;
+@inject ProductRepository ProductRepository;
 @inject Cart Cart;
 
 @* @inject ILogger<Navigate> Logger *@
@@ -15,15 +16,13 @@
 
 <div class="container py-5">
     <h3 class="text-center">Catalog</h3>
-    @for (int r = 0; r < 5; r++)
+    <button class="btn btn-primary" @onclick="CreateProduct">Добавить продукт</button>
+    @foreach (Product item in Catalog)
     {
         <div class="row row-cols-1 row-cols-md-3 g-4 py-5">
-            @for (int i = 0; i < 3 && productIndex < Catalog.Count; ++i)
-            {
-                <div class="col-12 col-md-6 col-lg-4">
-                    <CardComponent product="@Catalog[productIndex++]" Cart="@Cart"/>
+            <div class="col-12 col-md-6 col-lg-4">
+                    <CardComponent product="@item" Cart="@Cart"/>
                 </div>
-            }
         </div>
     }
 </div>
@@ -43,26 +42,27 @@
     </div>
 }
 @code {
-
-    //TODO: Выводить из базы
     [Parameter]
-    public Catalog Catalog { get; set; }
+    public List<Product> Catalog { get; set; }
 
     int productIndex = 0;
-    protected override void OnAfterRender(bool firstRender)
+    protected override async Task OnAfterRenderAsync (bool firstRender)
     {
         productIndex = 0;
+        Catalog = await ProductRepository.GetAll()!;
     }
 
     bool toast = false;
     void Showtoast() =>  toast = !toast;
 
     void GoToCart() => Navigation.NavigateTo("cart");
+    void CreateProduct() => Navigation.NavigateTo("/Products/create");
 
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         Navigation.LocationChanged += HandleLocationChanged;
+        Catalog = await ProductRepository.GetAll();
     }
 
     private void HandleLocationChanged(object? sender, LocationChangedEventArgs e)

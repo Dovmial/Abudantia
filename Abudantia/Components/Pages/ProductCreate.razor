@@ -1,0 +1,60 @@
+﻿@using Abudantia.Models
+@using Abudantia.Repository
+
+@page "/Products/create"
+@rendermode InteractiveServer
+@inject NavigationManager Navigation;
+@inject ProductRepository ProductRepository;
+
+<h3>Созание продукта</h3>
+<EditForm Model="@product" OnSubmit="Submit">
+    <p>
+        Названние:<br />
+        <InputText @bind-Value="product.Name" />
+    </p>
+    <p>
+        Описание:<br />
+        <InputTextArea @bind-Value="product.Description" />
+    </p>
+    <p>
+        Цена:<br />
+        <InputNumber @bind-Value="product.Price" />
+    </p>
+    <p>
+        Количество:<br />
+        <InputNumber @bind-Value="product.Amount" />
+    </p>
+    <p>
+        Изображение:<br />
+        <InputText @bind-Value="product.ImageLink" />
+    </p>
+    
+    <button class="btn btn-primary" type="submit">Добавить</button>
+    
+</EditForm>
+<button class="btn btn-secondary m-3" @onclick="BackToMain">Назад</button>
+
+<p>@message</p>
+
+@code {
+    Product product = new();
+    string message = string.Empty;
+    async Task Submit()
+    {
+        if (string.IsNullOrWhiteSpace(product.Name))
+        {
+            message = "Не заполнено название";
+            return;
+        }
+        var result = await ProductRepository.Create(product);
+        if (result.Result == false)
+        {
+            message = result.Error;
+            return;
+        }
+
+        BackToMain();
+    }
+
+    void BackToMain() => Navigation.NavigateTo("/");
+}
